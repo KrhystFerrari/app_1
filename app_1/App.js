@@ -51,7 +51,7 @@ export default function App() {
         style={{width: width, height: height}}
         region={region}
         zoomEnabled={true}
-        minZoomLevel={10}
+        minZoomLevel={5}
         showsUserLocation={true}
         loadingEnabled={true}
         onPress={(e) => newMarker(e)}
