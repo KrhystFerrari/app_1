@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Platform, PermissionsAndroid, Dimensions } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Geolocation from "@react-native-community/geolocation";
+import MapViewDirections from 'react-native-maps-directions';
 
 const {width, height} = Dimensions.get('screen');
 
 export default function App() {
   const [region, setRegion] = useState(null);
+  const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     getMyLocation()
@@ -33,12 +35,35 @@ export default function App() {
 
 
     function newMarker(e){
-      console.log(e.nativeEvent.coordinate.latitude);
+      //console.log(e.nativeEvent.coordinate.latitude);
+      let dados = {
+        key: markers.length,
+        coords: {
+          latitude: e.nativeEvent.coordinate.latitude,
+          longitude: e.nativeEvent.coordinate.longitude,
+        },
+        pinColor: '#ff0000'
+      }
+
+      setRegion({
+        latitude: e.nativeEvent.coordinate.latitude,
+        longitude: e.nativeEvent.coordinate.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      })
+
+      setMarkers(oldArray => [...oldArray, dados])
+
     }
 
   return(
     <View style={styles.container}>
       <MapView
+        <MapViewDirections 
+          origin={}
+          destination={}
+          apikey={}
+        />
         onMapReady={() => {
           Platform.OS === 'android' ?
           PermissionsAndroid.request(
@@ -55,7 +80,14 @@ export default function App() {
         showsUserLocation={true}
         loadingEnabled={true}
         onPress={(e) => newMarker(e)}
-      />
+      >
+
+        {markers.map(marker => {
+          return(
+            <Marker draggable key={marker.key} coordinate={marker.coords} pinColor={marker.pinColor} />
+          )
+        })}
+      </MapView>
     </View>
   );
 }
