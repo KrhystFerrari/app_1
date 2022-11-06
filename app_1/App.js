@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Platform, PermissionsAndroid, Dimensions } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from "@react-native-community/geolocation";
-import MapViewDirections from 'react-native-maps-directions';
 
 const {width, height} = Dimensions.get('screen');
 
@@ -59,11 +58,6 @@ export default function App() {
   return(
     <View style={styles.container}>
       <MapView
-        <MapViewDirections 
-          origin={}
-          destination={}
-          apikey={}
-        />
         onMapReady={() => {
           Platform.OS === 'android' ?
           PermissionsAndroid.request(
